@@ -1,63 +1,222 @@
-# PiPup – Android TV overlay + Home Assistant camera control
+# PiPup – Android TV overlay for Home Assistant
 
-PiPup shows overlay popups on Android TV and integrates tightly with Home Assistant.  
-This fork adds a **camera control popup**: live camera view + PTZ control from the TV remote.
+PiPup is an Android TV overlay service that can display rich popups over any app.  
+This fork extends the original project with **Home Assistant–friendly features** like notification sounds, persistent tiles, actionable buttons and a **camera control popup with PTZ**.
 
-![Camera control popup](docs/images/screen2.png)
-
-## Features
-
-- Popup notifications with text, images, video and web content.
-- **Camera Control popup** – live camera view with PTZ from the TV remote.
-- Persistent notification panel – always-visible tiles at the top of the screen.
-- Home Assistant integration (REST, webhooks, ADB conditions).
-- Configurable popup size and position (fullscreen, 3/4, 1/2, corners).
-- (Planned) **Multi‑camera view** – show several cameras at once.
+![Example popup](docs/images/screen2.png)
 
 ---
 
-## Camera Control overview
+## Table of contents
 
-The Camera Control popup lets you:
-
-- Open any camera stream that can be shown in WebView (e.g. go2rtc, MotionEye, Blue Iris web player).
-- Control PTZ using the TV remote (up/down/left/right/OK).
-- Choose the popup size (e.g. 3/4 of the screen) and screen corner.
-- Auto‑close the popup after a configurable timeout.
-
-Typical use cases:
-
-- Doorbell events – auto show the door camera with PTZ.
-- Motion detection – quickly peek at the backyard and move the camera.
-- Manual on‑demand camera view from Home Assistant.
-
-### Remote mapping
-
-| Remote button       | Action sent to HA            |
-|---------------------|-----------------------------|
-| ⬆️ D‑pad Up         | PTZ: move camera up         |
-| ⬇️ D‑pad Down       | PTZ: move camera down       |
-| ⬅️ D‑pad Left       | PTZ: move camera left       |
-| ➡️ D‑pad Right      | PTZ: move camera right      |
-| ⭕ D‑pad Center / OK | PTZ: home / preset          |
-| 🔙 Back             | Close the camera popup      |
+- [Overview](#overview)
+- [Original features](#original-features)
+- [Enhancements in this fork](#enhancements-in-this-fork)
+- [Installation](#installation)
+- [Home Assistant integration](#home-assistant-integration)
+  - [Basic popup](#basic-popup)
+  - [Persistent notifications panel](#persistent-notifications-panel)
+  - [Actionable popups](#actionable-popups)
+  - [Camera Control popup (PTZ)](#camera-control-popup-ptz)
+- [ADB conditions](#adb-conditions)
+- [Roadmap](#roadmap)
+- [Support](#support)
 
 ---
 
-## Installation
+## Overview
 
-1. Enable **“Install unknown apps”** on your Android TV.
-2. Install the PiPup APK (e.g. via `adb install`).
-3. Grant overlay permission (`SYSTEM_ALERT_WINDOW`) if required by your device.
-4. Configure the Home Assistant integration as shown below.
+PiPup runs as a foreground service on Android TV and draws overlay windows using `WindowManager`.  
+You can trigger popups from Home Assistant (or any HTTP client) by calling a simple JSON endpoint exposed by the built‑in web server.
+
+Default server port: **7979**  
+Default endpoint: `POST /notify`
 
 ---
 
-## Home Assistant integration
+## Original features
 
-### 1. REST command – open camera popup
+The original PiPup project already provides:
 
-```yaml
+- Text popups (title + message) with configurable colors and sizes.
+- Image / bitmap popups loaded from URL or multipart upload.
+- Video popups using `VideoView`.
+- Web popups using `WebView` (`media.web.uri`).
+- Positioning (corners / center) and duration in seconds.
+- Simple Home Assistant REST commands for showing and hiding popups.
+
+If you only need basic image / text popups, the original README examples still apply.
+
+---
+
+## Enhancements in this fork
+
+This fork focuses on **Home Assistant usage on Android TV** and adds:
+
+### 1. Notification sounds
+
+- Optional `sound` field in the payload:
+  - `"default"`, `"alarm"`, `"doorbell"`, `"none"`.
+- Sounds are played when the popup is shown.
+
+```json
+{
+  "title": "Doorbell",
+  "message": "Someone is at the door",
+  "sound": "doorbell"
+}
+2. Persistent notifications panel
+Popups can be marked as persistent and will appear as tiles in a top panel.
+
+Tiles survive app restarts (stored in SharedPreferences).
+
+Each persistent entry has:
+
+notificationId
+
+duration (optional auto‑expire)
+
+timestamps to restore remaining time after reboot.
+
+3. Actionable popups (buttons)
+Popups can include a list of actions with labels and IDs.
+
+Buttons are focusable and can be navigated by D‑pad.
+
+When a button is pressed, PiPup calls a callbackUrl with JSON:
+
+json
+{
+  "notificationId": "door_alert",
+  "action": "open_gate"
+}
+This maps perfectly to Home Assistant webhooks / REST automations.
+
+4. Camera Control popup (PTZ)
+Special popup mode with embedded WebView for camera stream.
+
+Uses the TV remote to send PTZ directions back to Home Assistant:
+
+up / down / left / right / OK.
+
+Popup size and position can be configured from HA.
+
+Proper cleanup to stop camera audio when the popup is closed.
+
+Installation
+Enable installing apps from unknown sources on your Android TV.
+
+Install the PiPup APK (e.g. adb install pipup.apk).
+
+Grant overlay permissions (SYSTEM_ALERT_WINDOW) if required.
+
+Make sure PiPup is allowed to run as a foreground service (no aggressive battery killers).
+
+Home Assistant integration
+Below are practical examples for the different features.
+
+Basic popup
+Simple JSON popup via rest_command:
+
+text
+rest_command:
+  pipup_basic_popup:
+    url: http://192.168.1.231:7979/notify
+    method: POST
+    content_type: "application/json"
+    payload: >
+      {
+        "title": "{{ title | default('PiPup') }}",
+        "message": "{{ message | default('Hello from Home Assistant') }}",
+        "duration": {{ duration | default(10) }},
+        "position": {{ position | default(5) }}
+      }
+Usage:
+
+text
+service: rest_command.pipup_basic_popup
+data:
+  title: "Test"
+  message: "This is a basic popup"
+  duration: 8
+  position: 5
+Persistent notifications panel
+Each persistent item is stored with notificationId and can optionally expire after duration seconds.
+
+text
+rest_command:
+  pipup_persistent:
+    url: http://192.168.1.231:7979/notify
+    method: POST
+    content_type: "application/json"
+    payload: >
+      {
+        "title": "{{ title | default('Status') }}",
+        "message": "{{ message | default('Something happened') }}",
+        "backgroundColor": "{{ color | default('#CC000000') }}",
+        "notificationId": "{{ id | default('example_status') }}",
+        "persistent": true,
+        "duration": {{ duration | default(0) }}
+      }
+Remove one persistent entry:
+
+bash
+curl -X POST http://192.168.1.231:7979/clear \
+  -H "Content-Type: application/json" \
+  -d '{"notificationId": "example_status"}'
+Clear all:
+
+bash
+curl -X POST http://192.168.1.231:7979/clear
+Actionable popups
+actions are encoded as "id:Label|id2:Label2|...".
+
+text
+rest_command:
+  pipup_actionable:
+    url: http://192.168.1.231:7979/notify
+    method: POST
+    content_type: "application/json"
+    payload: >
+      {
+        "title": "{{ title | default('Action required') }}",
+        "message": "{{ message | default('Choose an option') }}",
+        "duration": {{ duration | default(30) }},
+        "callbackUrl": "http://192.168.1.122:8123/api/webhook/pipup_actions",
+        "actions": "open_gate:Open gate|ignore:Ignore"
+      }
+Example automation to handle actions in HA:
+
+text
+automation:
+  - id: pipup_actions_webhook
+    alias: "PiPup – actionable popup handler"
+    trigger:
+      - platform: webhook
+        webhook_id: pipup_actions
+    action:
+      - choose:
+          - conditions:
+              - condition: template
+                value_template: "{{ trigger.json.action == 'open_gate' }}"
+            sequence:
+              - service: switch.turn_on
+                target:
+                  entity_id: switch.gate_relay
+
+          - conditions:
+              - condition: template
+                value_template: "{{ trigger.json.action == 'ignore' }}"
+            sequence:
+              - service: logbook.log
+                data:
+                  name: "PiPup"
+                  message: "User ignored the alert"
+Camera Control popup (PTZ)
+The most advanced part: show a camera stream and control PTZ from the remote.
+
+1. REST command
+text
 rest_command:
   pipup_camera_control:
     url: http://192.168.1.231:7979/notify
@@ -79,43 +238,42 @@ rest_command:
           }
         }
       }
+Popup positions:
 
-Parameters:
-
-title – title shown above the camera.
-
-url – camera page/stream URL.
-
-duration – display time in seconds (0 = no auto‑close).
-
-width / height – popup size in pixels.
-
-position – popup position (1–5, see table below).
-
-Popup positions
 position	Screen position
 1	Top‑right
 2	Top‑left
 3	Bottom‑right
 4	Bottom‑left
 5	Center
-Example sizes for 1920×1080 TV
+Example sizes for 1920×1080:
+
 Name	width	height
 Fullscreen	1920	1080
 3/4 screen	1440	810
 1/2 screen	960	540
 1/4 screen	480	270
-2. Webhook – PTZ control in Home Assistant
+Example usage (3/4 screen, top‑right):
+
+text
+service: rest_command.pipup_camera_control
+data:
+  title: "PTZ Camera"
+  url: "http://192.168.1.122:1984/stream.html?src=PTZ_R_SD"
+  width: 1440
+  height: 810
+  position: 1
+  duration: 120
+2. PTZ webhook in Home Assistant
 text
 automation:
   - id: pipup_camera_ptz_control
-    alias: "PiPup – Camera PTZ control"
+    alias: "PiPup – camera PTZ control"
     trigger:
       - platform: webhook
         webhook_id: camera_control
     action:
       - choose:
-          # Up
           - conditions:
               - condition: template
                 value_template: "{{ trigger.json.direction == 'up' }}"
@@ -127,7 +285,6 @@ automation:
                   move_mode: RelativeMove
                   tilt: 0.1
 
-          # Down
           - conditions:
               - condition: template
                 value_template: "{{ trigger.json.direction == 'down' }}"
@@ -139,7 +296,6 @@ automation:
                   move_mode: RelativeMove
                   tilt: -0.1
 
-          # Left
           - conditions:
               - condition: template
                 value_template: "{{ trigger.json.direction == 'left' }}"
@@ -151,7 +307,6 @@ automation:
                   move_mode: RelativeMove
                   pan: -0.1
 
-          # Right
           - conditions:
               - condition: template
                 value_template: "{{ trigger.json.direction == 'right' }}"
@@ -163,7 +318,6 @@ automation:
                   move_mode: RelativeMove
                   pan: 0.1
 
-          # OK – go to home preset
           - conditions:
               - condition: template
                 value_template: "{{ trigger.json.direction == 'ok' }}"
@@ -173,40 +327,18 @@ automation:
                   entity_id: camera.ptz_camera
                 data:
                   move_mode: GotoHome
-Adjust the camera.ptz_camera entity and PTZ parameters to match your setup.
+Remote mapping:
 
-3. Example automations
-Doorbell – fullscreen popup
-text
-automation:
-  - alias: "Doorbell – show camera"
-    trigger:
-      - platform: state
-        entity_id: binary_sensor.doorbell
-        to: "on"
-    action:
-      - service: rest_command.pipup_camera_control
-        data:
-          title: "🚪 Someone at the door"
-          url: "http://192.168.1.122:1984/stream.html?src=doorbell"
-          width: 1920
-          height: 1080
-          position: 5
-          duration: 60
-3/4 popup in the top‑right corner
-text
-service: rest_command.pipup_camera_control
-data:
-  title: "PTZ Camera"
-  url: "http://192.168.1.122:1984/stream.html?src=PTZ_R_SD"
-  width: 1440
-  height: 810
-  position: 1        # top‑right
-  duration: 120
-ADB conditions – detecting active popup
-If you use the Android TV integration with ADB, you can prevent other automations (like changing inputs) while PiPup is on top.
+Remote button	Direction payload
+Up	"up"
+Down	"down"
+Left	"left"
+Right	"right"
+Center / OK	"ok"
+ADB conditions
+With the Android TV integration you can query the active window and avoid conflicts (e.g. do not change HDMI input while PiPup is visible).
 
-Example command:
+Example ADB command:
 
 text
 service: androidtv.adb_command
@@ -222,66 +354,22 @@ condition:
     value_template: >-
       {{ not ('mCurrentFocus=Window{' in state_attr('media_player.android_tv_192_168_1_231', 'adb_response')
          and 'pipup' in state_attr('media_player.android_tv_192_168_1_231', 'adb_response')) }}
-Code changes (summary)
-PopupProps.kt
+Roadmap
+Planned ideas for this fork:
 
-Added:
+Multi‑camera view
 
-cameraControl: Boolean
+2×2 / 3×3 grid with multiple cameras.
 
-controlCallbackUrl: String?
+D‑pad navigation between tiles, OK = enlarge selected camera.
 
-PiPupService.kt
-
-createCameraControlPopup(popup: PopupProps) – creates camera overlay with size from media.width/height, focuses the view and handles remote keys.
-
-sendControlCallback(popup, direction) – sends JSON {direction, notificationId} to the Home Assistant webhook.
-
-removePopup() – additionally searches for R.id.camera_webview inside the overlay, stops and destroys the WebView to avoid audio continuing in the background.
-
-PopupView.kt
-
-PopupView.Web:
-
-in destroy() now calls:
-
-webView.stopLoading()
-
-webView.loadUrl("about:blank")
-
-webView.destroy()
-
-res/layout/popup_camera_control.xml
-
-New layout containing:
-
-Title TextView
-
-WebView for the camera stream.
-
-Roadmap / ideas
-Multi‑camera view:
-
-grid layout (2×2 / 3×3) with multiple WebViews,
-
-focus switching between tiles with the D‑pad,
-
-pressing OK opens the selected camera in a bigger popup.
-
-Zoom in/out mapped to Volume Up/Down (where supported by PTZ).
+Zoom in/out mapping (e.g. Volume Up/Down) where PTZ supports it.
 
 Exportable Home Assistant blueprints for common scenarios (doorbell, motion, watchdog).
 
-Screenshots
-text
+Optional MQTT control interface.
 
+Support
+If this project saves you time or you use it in your setup, you can support further development here:
 
-Made for Home Assistant & Android TV.
-
-## Support
-
-If this project helps you, you can support my work here:
-
-<a href="https://www.buymeacoffee.com/controli" target="_blank">
-  <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174">
-</a>
+<a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a> ```
