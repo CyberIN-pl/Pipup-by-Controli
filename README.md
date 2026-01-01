@@ -59,14 +59,15 @@ This fork focuses on **Home Assistant usage on Android TV** and adds:
   - `"default"`, `"alarm"`, `"doorbell"`, `"none"`.
 - Sounds are played when the popup is shown.
 
-json
+```json
 {
   "title": "Doorbell",
   "message": "Someone is at the door",
   "sound": "doorbell"
 }
+```json
 
-2. Persistent notifications panel
+### 2. Persistent notifications panel
 Popups can be marked as persistent and will appear as tiles in a top panel.
 
 Tiles survive app restarts (stored in SharedPreferences).
@@ -79,7 +80,7 @@ duration (optional auto‑expire)
 
 timestamps to restore remaining time after reboot.
 
-3. Actionable popups (buttons)
+### 3. Actionable popups (buttons)
 Popups can include a list of actions with labels and IDs.
 
 Buttons are focusable and can be navigated by D‑pad.
@@ -93,7 +94,7 @@ json
 }
 This maps perfectly to Home Assistant webhooks / REST automations.
 
-4. Camera Control popup (PTZ)
+### 4. Camera Control popup (PTZ)
 Special popup mode with embedded WebView for camera stream.
 
 Uses the TV remote to send PTZ directions back to Home Assistant:
