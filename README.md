@@ -74,11 +74,11 @@ Tiles survive app restarts (stored in SharedPreferences).
 
 Each persistent entry has:
 
-notificationId
+- notificationId
 
-duration (optional auto‑expire)
+- duration (optional auto‑expire)
 
-timestamps to restore remaining time after reboot.
+- timestamps to restore remaining time after reboot.
 
 ### 3. Actionable popups (buttons)
 Popups can include a list of actions with labels and IDs.
