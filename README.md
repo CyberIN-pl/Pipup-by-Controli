@@ -68,6 +68,7 @@ This fork focuses on **Home Assistant usage on Android TV** and adds:
 ```
 
 ### 2. Persistent notifications panel
+![Example popup](docs/images/screen12.png)
 Popups can be marked as persistent and will appear as tiles in a top panel.
 
 Tiles survive app restarts (stored in SharedPreferences).
@@ -81,6 +82,7 @@ Each persistent entry has:
 - timestamps to restore remaining time after reboot.
 
 ### 3. Actionable popups (buttons)
+![Example popup](docs/images/screen8.png)
 Popups can include a list of actions with labels and IDs.
 
 Buttons are focusable and can be navigated by D‑pad.
@@ -111,7 +113,9 @@ Enable installing apps from unknown sources on your Android TV.
 
 Install the PiPup APK (e.g. adb install pipup.apk).
 
-Grant overlay permissions (SYSTEM_ALERT_WINDOW) if required.
+Grant overlay permissions (SYSTEM_ALERT_WINDOW) - Display over other apps.
+
+![Example popup](docs/images/uprawnienia.png)
 
 Make sure PiPup is allowed to run as a foreground service (no aggressive battery killers).
 
