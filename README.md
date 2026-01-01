@@ -156,7 +156,7 @@ data:
 ## Persistent notifications panel
 Each persistent item is stored with notificationId and can optionally expire after duration seconds.
 
-text
+```text
 rest_command:
   pipup_persistent:
     url: http://192.168.1.231:7979/notify
@@ -171,20 +171,22 @@ rest_command:
         "persistent": true,
         "duration": {{ duration | default(0) }}
       }
+```      
 Remove one persistent entry:
 
-bash
+```bash
 curl -X POST http://192.168.1.231:7979/clear \
   -H "Content-Type: application/json" \
   -d '{"notificationId": "example_status"}'
+```  
 Clear all:
 
-bash
+```bash
 curl -X POST http://192.168.1.231:7979/clear
 ## Actionable popups
 actions are encoded as "id:Label|id2:Label2|...".
-
-text
+```
+```text
 rest_command:
   pipup_actionable:
     url: http://192.168.1.231:7979/notify
@@ -198,9 +200,10 @@ rest_command:
         "callbackUrl": "http://192.168.1.122:8123/api/webhook/pipup_actions",
         "actions": "open_gate:Open gate|ignore:Ignore"
       }
+```
 Example automation to handle actions in HA:
 
-text
+```text
 automation:
   - id: pipup_actions_webhook
     alias: "PiPup – actionable popup handler"
@@ -227,9 +230,9 @@ automation:
                   message: "User ignored the alert"
 ## Camera Control popup (PTZ)
 The most advanced part: show a camera stream and control PTZ from the remote.
-
+```
 1. REST command
-text
+```text
 rest_command:
   pipup_camera_control:
     url: http://192.168.1.231:7979/notify
@@ -251,6 +254,7 @@ rest_command:
           }
         }
       }
+```
 Popup positions:
 
 position	Screen position
