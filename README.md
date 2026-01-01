@@ -22,7 +22,7 @@ This fork extends the original project with **Home Assistant–friendly features
   - [Persistent notifications panel](#persistent-notifications-panel)
   - [Actionable popups](#actionable-popups)
   - [Camera Control popup (PTZ)](#camera-control-popup-ptz)
-- [ADB conditions](#adb-conditions)
+
 - [Roadmap](#roadmap)
 - [Support](#support)
 
@@ -124,10 +124,10 @@ Grant overlay permissions (SYSTEM_ALERT_WINDOW) - Display over other apps.
 
 Make sure PiPup is allowed to run as a foreground service (no aggressive battery killers).
 
-Home Assistant integration
+### Home Assistant integration
 Below are practical examples for the different features.
 
-Basic popup
+## Basic popup
 Simple JSON popup via rest_command:
 
 ```text
@@ -154,7 +154,7 @@ data:
   duration: 8
   position: 5
 ```
-Persistent notifications panel
+## Persistent notifications panel
 Each persistent item is stored with notificationId and can optionally expire after duration seconds.
 
 text
@@ -182,7 +182,7 @@ Clear all:
 
 bash
 curl -X POST http://192.168.1.231:7979/clear
-Actionable popups
+## Actionable popups
 actions are encoded as "id:Label|id2:Label2|...".
 
 text
@@ -226,7 +226,7 @@ automation:
                 data:
                   name: "PiPup"
                   message: "User ignored the alert"
-Camera Control popup (PTZ)
+## Camera Control popup (PTZ)
 The most advanced part: show a camera stream and control PTZ from the remote.
 
 1. REST command
@@ -349,25 +349,8 @@ Down	"down"
 Left	"left"
 Right	"right"
 Center / OK	"ok"
-ADB conditions
-With the Android TV integration you can query the active window and avoid conflicts (e.g. do not change HDMI input while PiPup is visible).
 
-Example ADB command:
 
-text
-service: androidtv.adb_command
-data:
-  command: adb shell dumpsys window windows | grep -i pipup && echo 1 || echo 0
-target:
-  entity_id: media_player.android_tv_192_168_1_231
-Template condition – true when PiPup is not in the foreground:
-
-text
-condition:
-  - condition: template
-    value_template: >-
-      {{ not ('mCurrentFocus=Window{' in state_attr('media_player.android_tv_192_168_1_231', 'adb_response')
-         and 'pipup' in state_attr('media_player.android_tv_192_168_1_231', 'adb_response')) }}
 Roadmap
 Planned ideas for this fork:
 
