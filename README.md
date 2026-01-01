@@ -374,6 +374,6 @@ Exportable Home Assistant blueprints for common scenarios (doorbell, motion, wat
 
 Optional MQTT control interface.
 
-Support
+### Support
 
-If this project saves you time or you use it in your setup, you can support further development here: <a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a> ```
+If this project saves you time or you use it in your setup, you can support further development here: <a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a>
