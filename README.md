@@ -105,7 +105,7 @@ Popup size and position can be configured from HA.
 
 Proper cleanup to stop camera audio when the popup is closed.
 
-Installation
+### Installation
 Enable installing apps from unknown sources on your Android TV.
 
 Install the PiPup APK (e.g. adb install pipup.apk).
@@ -120,7 +120,7 @@ Below are practical examples for the different features.
 Basic popup
 Simple JSON popup via rest_command:
 
-text
+```text
 rest_command:
   pipup_basic_popup:
     url: http://192.168.1.231:7979/notify
@@ -133,15 +133,17 @@ rest_command:
         "duration": {{ duration | default(10) }},
         "position": {{ position | default(5) }}
       }
+```
 Usage:
 
-text
+```text
 service: rest_command.pipup_basic_popup
 data:
   title: "Test"
   message: "This is a basic popup"
   duration: 8
   position: 5
+```
 Persistent notifications panel
 Each persistent item is stored with notificationId and can optionally expire after duration seconds.
 
