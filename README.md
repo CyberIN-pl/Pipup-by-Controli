@@ -115,7 +115,8 @@ Proper cleanup to stop camera audio when the popup is closed.
 ### Installation
 Enable installing apps from unknown sources on your Android TV.
 
-Install the PiPup APK (e.g. adb install pipup.apk). <a href="https://github.com/CyberIN-pl/Pipup-by-Controli/blob/main/releases/app-release.apk" target="_blank">
+Install the PiPup APK (e.g. adb install pipup.apk).
+<a href="https://github.com/CyberIN-pl/Pipup-by-Controli/blob/main/releases/app-release.apk" target="_blank"> <alt="Pipup.apk"> </a>
 
 Grant overlay permissions (SYSTEM_ALERT_WINDOW) - Display over other apps.
 
