@@ -5,7 +5,7 @@ This fork extends the original project with **Home Assistant–friendly features
 - notification sounds
 - persistent tiles
 - actionable buttons
-- **camera control popup with PTZ**.
+- camera control popup with PTZ.
 
 ![Example popup](docs/images/logo.png)
 
@@ -374,6 +374,10 @@ Exportable Home Assistant blueprints for common scenarios (doorbell, motion, wat
 
 Optional MQTT control interface.
 
+
+
 ### Support
 
-If this project saves you time or you use it in your setup, you can support further development here: <a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a>
+If this project saves you time or you use it in your setup,
+you can support further development here: 
+<a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a>
