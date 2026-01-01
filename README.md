@@ -178,14 +178,16 @@ Remove one persistent entry:
 curl -X POST http://192.168.1.231:7979/clear \
   -H "Content-Type: application/json" \
   -d '{"notificationId": "example_status"}'
-```  
+```
+
 Clear all:
 
 ```bash
 curl -X POST http://192.168.1.231:7979/clear
+```
 ## Actionable popups
 actions are encoded as "id:Label|id2:Label2|...".
-```
+
 ```text
 rest_command:
   pipup_actionable:
