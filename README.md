@@ -39,7 +39,7 @@ Default endpoint: `POST /notify`
 
 ## Original features
 
-The original PiPup project already provides:
+The original (source PiPup project: https://github.com/gmcmicken/PiPup) already provides:
 
 - Text popups (title + message) with configurable colors and sizes.
 - Image / bitmap popups loaded from URL or multipart upload.
@@ -112,7 +112,7 @@ Popup size and position can be configured from HA.
 
 Proper cleanup to stop camera audio when the popup is closed.
 
-### Installation
+## Installation
 Enable installing apps from unknown sources on your Android TV.
 
 Install the <a href="https://github.com/CyberIN-pl/Pipup-by-Controli/blob/main/releases/" target="_blank"> Pipup.apk </a> (e.g. adb install pipup.apk).
@@ -123,10 +123,10 @@ Grant overlay permissions (SYSTEM_ALERT_WINDOW) - Display over other apps.
 
 Make sure PiPup is allowed to run as a foreground service (no aggressive battery killers).
 
-### Home Assistant integration
+## Home Assistant integration
 Below are practical examples for the different features.
 
-## Basic popup
+### Basic popup
 Simple JSON popup via rest_command:
 
 ```text
@@ -153,7 +153,7 @@ data:
   duration: 8
   position: 5
 ```
-## Persistent notifications panel
+### Persistent notifications panel
 Each persistent item is stored with notificationId and can optionally expire after duration seconds.
 
 ```text
@@ -185,7 +185,7 @@ Clear all:
 ```bash
 curl -X POST http://192.168.1.231:7979/clear
 ```
-## Actionable popups
+### Actionable popups
 actions are encoded as "id:Label|id2:Label2|...".
 
 ```text
@@ -231,7 +231,7 @@ automation:
                   name: "PiPup"
                   message: "User ignored the alert"
 ```
-## Camera Control popup (PTZ)
+### Camera Control popup (PTZ)
 The most advanced part: show a camera stream and control PTZ from the remote.
 
 1. REST command
@@ -260,19 +260,23 @@ rest_command:
 ```
 Popup positions:
 
-position	Screen position
-1	Top‑right
-2	Top‑left
-3	Bottom‑right
-4	Bottom‑left
-5	Center
+| position | Screen position |
+| -------- | --------------- |
+| 0        | Top‑right       |
+| 1        | Top‑left        |
+| 2        | Bottom‑right    |
+| 3        | Bottom‑left     |
+| 4        | Center          |
+
 Example sizes for 1920×1080:
 
-Name	width	height
-Fullscreen	1920	1080
-3/4 screen	1440	810
-1/2 screen	960	540
-1/4 screen	480	270
+| Name       | width | height |
+| ---------- | ----- | ------ |
+| Fullscreen | 1920  | 1080   |
+| 3/4 screen | 1440  | 810    |
+| 1/2 screen | 960   | 540    |
+| 1/4 screen | 480   | 270    |
+
 Example usage (3/4 screen, top‑right):
 
 ```text
@@ -351,33 +355,35 @@ automation:
 ```
 Remote mapping:
 
-Remote button	Direction payload
-Up	"up"
-Down	"down"
-Left	"left"
-Right	"right"
-Center / OK	"ok"
+| Remote button | Direction payload |
+| ------------- | ----------------- |
+| Up            | "up"              |
+| Down          | "down"            |
+| Left          | "left"            |
+| Right         | "right"           |
+| Center / OK   | "ok"              |
 
 
 Roadmap
 Planned ideas for this fork:
 
-Multi‑camera view
+- Multi‑camera view
 
-2×2 / 3×3 grid with multiple cameras.
+  - 2×2 / 3×3 grid with multiple cameras.
 
-D‑pad navigation between tiles, OK = enlarge selected camera.
+  - D‑pad navigation between tiles, OK = enlarge selected camera.
 
-Zoom in/out mapping (e.g. Volume Up/Down) where PTZ supports it.
+- Zoom in/out mapping (e.g. Volume Up/Down) where PTZ supports it.
 
-Exportable Home Assistant blueprints for common scenarios (doorbell, motion, watchdog).
+- Exportable Home Assistant blueprints for common scenarios (doorbell, motion, watchdog).
 
-Optional MQTT control interface.
+- Optional MQTT control interface.
 
 
 
 ### Support
 
 If this project saves you time or you use it in your setup,
-you can support further development here: 
+you can support further development here:
+
 <a href="https://www.buymeacoffee.com/controli" target="_blank"> <img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"> </a>
