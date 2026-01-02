@@ -15,16 +15,16 @@ Ten fork rozszerza oryginalny projekt o **funkcje przyjazne dla Home Assistant**
 
 ## Spis treści
 
-- [Przegląd](#przegląd)
-- [Oryginalne funkcje](#oryginalne-funkcje)
-- [Ulepszenia w tym forku](#ulepszenia-w-tym-forku)
+- [Przegląd](#przeglad)
+- [Oryginalne funkcje](#oryginalne)
+- [Ulepszenia w tym forku](#ulepszenia)
 - [Instalacja](#instalacja)
-- [Integracja z Home Assistant](#integracjja-z-home-assistant)
-- [Podstawowe wyskakujące okienko](#podztawowe-wyskakujące-okienko)
-- [Panel stałych powiadomień](#panel-stałych-powiadomień)
-- [Okienko z akcjami](#Okienka-z-akcjami)
-- [Okienko sterowania kamerą (PTZ)](#okienko-sterowania-kamerą)
-- [Plan rozwoju](#plan-rozwoju)
+- [Integracja z Home Assistant](#integracjja)
+- [Podstawowe wyskakujące okienko](#podstawowe)
+- [Panel stałych powiadomień](#panel)
+- [Powiadomienie z akcjami](#akcje)
+- [Okienko sterowania kamerą (PTZ)](#kamera)
+- [Plan rozwoju](#plan)
 - [Wsparcie](#wsparcie)
 
 PiPup działa jako usługa pierwszoplanowa na Android TV i rysuje okna nakładkowe za pomocą `WindowManager`.
