@@ -366,11 +366,12 @@ Planned ideas for this fork:
 - Zoom in/out mapping (e.g. Volume Up/Down) where PTZ supports it.
 - Exportable Home Assistant blueprints for common scenarios (doorbell, motion, watchdog).
 - Optional MQTT control interface.
+- Persistent notification animation (reminder)
 
 
 ### Support
 
-Did you find my work helpful? Consider supporting my work:
+Was my work helpful? Please consider supporting it. Thank you!
 
 <a href="https://www.buymeacoffee.com/yourusername" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" alt="Buy Me A Coffee" height="40" >
