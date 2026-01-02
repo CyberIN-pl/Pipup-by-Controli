@@ -28,35 +28,35 @@ Ten fork rozszerza oryginalny projekt o **funkcje przyjazne dla Home Assistant**
 - [Wsparcie](#wsparcie)
 
 PiPup działa jako usługa pierwszoplanowa na Android TV i rysuje okna nakładkowe za pomocą `WindowManager`.
-Możesz wywoływać wyskakujące okienka z Home Assistant (lub dowolnego klienta HTTP), wywołując prosty punkt końcowy JSON udostępniany przez wbudowany serwer WWW.
+Możesz wywoływać wyskakujące okienka z Home Assistant (lub dowolnego klienta HTTP), wywołując prosty punkt końcowy udostępniany przez wbudowany serwer WWW.
 
 Domyślny port serwera: **7979**
 Domyślny punkt końcowy: `POST /notify`
 
 ## Oryginalne funkcje
 
-Oryginalny (źródło projektu PiPup: https://github.com/gmcmicken/PiPup) oferuje już:
+Oryginalny projekt (PiPup: https://github.com/gmcmicken/PiPup) oferuje:
 
 - Wyskakujące okienka tekstowe (tytuł + wiadomość) z konfigurowalnymi kolorami i rozmiarami.
-- Wyskakujące okienka z obrazkami/bitmapami ładowane z adresu URL lub przesyłane w postaci wielu części.
-- Wyskakujące okienka wideo za pomocą `VideoView`.
-- Wyskakujące okienka internetowe za pomocą `WebView` (`media.web.uri`).
+- Wyskakujące okienka z obrazkami/bitmapami ładowane z adresu URL.
+- Wyskakujące okienka wideo.
+- Wyskakujące okienka internetowe (`media.web.uri`).
 - Pozycjonowanie (rogi / środek) i czas trwania w sekundach.
 - Proste polecenia REST Home Assistant do wyświetlania i ukrywania wyskakujących okienek.
 
-Jeśli potrzebujesz tylko podstawowych okienek z obrazami/tekstem, nadal obowiązują oryginalne przykłady README.
+Jeśli potrzebujesz tylko podstawowych okienek z obrazami/tekstem...
 
 ---
 
 ## Ulepszenia w tym forku
 
-Ten fork koncentruje się na **korzystaniu z Home Assistant na Android TV** i dodaje:
+Ten fork koncentruje się na **współpracy z Home Assistant na Android TV** i dodaje:
 
 ### 1. Dźwięki powiadomień
 
-- Opcjonalne pole `sound` w paśmie:
+- Opcjonalne pole `sound`z opcjami:
 - ``default``, ``alarm``, ``doorbell``, ``none``.
-- Dźwięki są odtwarzane po wyświetleniu okienka.
+- Dźwięki są odtwarzane przy wyświetleniu okienka.
 
 ```json
 {
@@ -69,7 +69,7 @@ Ten fork koncentruje się na **korzystaniu z Home Assistant na Android TV** i do
 
 ![Example popup](docs/images/screen12a.png)
 
-Okna można oznaczyć jako stałe i będą one wyświetlane jako kafelki w górnym panelu.
+Powiadomienie można oznaczyć jako stałe i będą one wyświetlane jako kafelki w górnym panelu.
 Kafelki są odporne na ponowne uruchomienie aplikacji (przechowywane w SharedPreferences).
 Każdy trwały wpis zawiera:
 - notificationId
@@ -79,8 +79,8 @@ Każdy trwały wpis zawiera:
 ### 3. Wyskakujące okienka (AKCJE)
 ![Example popup](docs/images/screen8a.png)
 Wyskakujące okienka mogą zawierać listę akcji z etykietami i identyfikatorami.
-Przyciski można aktywować i nawigować za pomocą krzyżaka.
-Po naciśnięciu przycisku PiPup wywołuje callbackUrl z JSON:
+Przyciski można aktywować za pomocą pilota.
+Po wybraniu przycisku, PiPup wywołuje callbackUrl z JSON:
 ```json
 {
   "notificationId": "door_alert",
@@ -412,6 +412,7 @@ Planowane pomysły dla tego forka:
 - Opcjonalny interfejs sterowania MQTT.
 - Trwała animacja powiadomienia (przypomnienie)
 
+
 ### Opinia
 
 Znalazłeś błąd lub masz pomysł?
@@ -421,9 +422,13 @@ Znalazłeś błąd lub masz pomysł?
 
 Repozytorium: https://github.com/Controli-pl/Pipup-by-Controli
 
+
+
 ### Wsparcie
 
-Czy moja praca była pomocna? Rozważ wsparcie. Dziękuję!
+Czy moja praca była pomocna? Rozważ wsparcie. 
+Dziękuję!
+
 <a href="https://www.buymeacoffee.com/yourusername" target="_blank">
   <img src="https://cdn.buymeacoffee.com/buttons/v2/default-orange.png" alt="Buy Me A Coffee" height="40" >
 </a>
