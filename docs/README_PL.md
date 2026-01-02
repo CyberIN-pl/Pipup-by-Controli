@@ -67,7 +67,7 @@ Ten fork koncentruje się na **współpracy z Home Assistant na Android TV** i d
 ```
 ### 2. Stały panel powiadomień
 
-![Example popup](docs/images/screen12a.png)
+![Example popup](images/screen12a.png)
 
 Powiadomienie można oznaczyć jako stałe i będą one wyświetlane jako kafelki w górnym panelu.
 Kafelki są odporne na ponowne uruchomienie aplikacji (przechowywane w SharedPreferences).
@@ -77,7 +77,7 @@ Każdy trwały wpis zawiera:
 - znaczniki czasu, aby przywrócić pozostały czas po ponownym uruchomieniu.
 
 ### 3. Wyskakujące okienka (AKCJE)
-![Example popup](docs/images/screen8a.png)
+![Example popup](images/screen8a.png)
 Wyskakujące okienka mogą zawierać listę akcji z etykietami i identyfikatorami.
 Przyciski można aktywować za pomocą pilota.
 Po wybraniu przycisku, PiPup wywołuje callbackUrl z JSON:
@@ -108,7 +108,7 @@ Zainstaluj.
 
 Udziel uprawnień do nakładki (SYSTEM_ALERT_WINDOW) — wyświetlanie na innych aplikacjach.
 
-![Example popup](docs/images/uprawnienia.png)
+![Example popup](images/uprawnienia.png)
 
 Upewnij się, że PiPup może działać jako usługa na pierwszym planie (bez agresywnych programów wyczerpujących baterię).
 
