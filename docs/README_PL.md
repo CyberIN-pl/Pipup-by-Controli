@@ -11,7 +11,7 @@ Ten fork rozszerza oryginalny projekt o **funkcje przyjazne dla Home Assistant**
 - przyciski akcji
 - okienko sterowania kamerą z funkcją PTZ.
 
-![PiPup demo](/images/pipup-demo.gif)
+![PiPup demo](images/pipup-demo.gif)
 
 ## Spis treści
 
