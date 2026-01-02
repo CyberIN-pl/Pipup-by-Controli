@@ -116,7 +116,7 @@ Upewnij się, że PiPup może działać jako usługa na pierwszym planie (bez ag
 Poniżej znajdują się praktyczne przykłady różnych funkcji.
 # Oczywiście zmień adres IP na poprawny! (dla Android TV i HA - do wywołania zwrotnego)
 
-### Podstawowe wyskakujące okienko {#podstawowe}
+### Podstawowe wyskakujące okienko
 Proste wyskakujące okienko JSON za pomocą polecenia rest_command:
 ```text
 rest_command:
