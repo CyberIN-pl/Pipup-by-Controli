@@ -10,7 +10,7 @@ This fork extends the original project with **Home Assistant–friendly features
 - actionable buttons
 - camera control popup with PTZ.
 
-![Example popup](docs/images/logo.png)
+![PiPup demo](docs/images/pipup-demo.gif)
 
 ---
 
